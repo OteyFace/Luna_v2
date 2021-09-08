@@ -1,0 +1,29 @@
+{
+  "name": "luna_v2",
+  "version": "1.0.0",
+  "description": "Luna v2",
+  "main": "Luna_v2.js",
+  "scripts": {
+    "start": "node ./Luna_v2.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vio-Eli/Luna_v2.git"
+  },
+  "author": "Vio",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Vio-Eli/Luna_v2/issues"
+  },
+  "homepage": "https://github.com/Vio-Eli/Luna_v2#readme",
+  "dependencies": {
+    "@discordjs/rest": "^0.1.0-canary.0",
+    "@sapphire/snowflake": "^2.0.0",
+    "chalk": "^4.1.2",
+    "discord-api-types": "^0.23.1",
+    "discord.js": "^13.1.0",
+    "gradient-string": "^1.2.0",
+    "moment": "^2.29.1",
+    "prompts": "^2.4.1"
+  }
+}
