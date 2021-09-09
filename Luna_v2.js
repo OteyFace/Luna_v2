@@ -117,4 +117,20 @@ client.on('interactionCreate', async interaction => {
     }
 });
 
+// Normal text commands
+client.on('messageCreate', async message => {
+    if (!message.content.startsWith(settings.Prefix)) return;
+
+    const args      = message.content.slice(settings.Prefix.length).split(/ +/),
+          Ncommand   = args.shift().toLowerCase(),
+          command   = client.commands.get(Ncommand) || client.commands.find((cmd) => cmd.aliases && cmd.aliases.includes(Ncommand));
+
+    try {
+        await command.execute(message);
+    } catch (error) {
+        if (error) console.error(error);
+        await message.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+    }
+});
+
 client.login(settings.Token);

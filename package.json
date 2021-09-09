@@ -25,6 +25,7 @@
     "discord.js": "^13.1.0",
     "gradient-string": "^1.2.0",
     "moment": "^2.29.1",
+    "node-fetch": "^3.0.0",
     "prompts": "^2.4.1"
   }
 }
