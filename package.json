@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/Vio-Eli/Luna_v2#readme",
   "dependencies": {
+    "@discordjs/builders": "^0.6.0",
     "@discordjs/rest": "^0.1.0-canary.0",
     "@sapphire/snowflake": "^2.0.0",
     "chalk": "^4.1.2",
