@@ -22,16 +22,21 @@ var settings;
 
 // ██████ Our Integrations █████████████████████████████████████████████████████
 // Discord.js...
-const Discord   = require("discord.js"),
+const {Client, Intents}   = require("discord.js"),
+    Discord = require("discord.js"),
 // Parse, validate, manipulate, and display dates
     moment      = require("moment"),
 // Terminal string styling done right
     chalk       = require("chalk");
 // Creating our discord client
-const client    = new Discord.client({ autoReconnect: true }),
+const client    = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] }),
     active      = new Map(),
     cooldowns   = new Discord.Collection(),
-    Glossary    = new require()
+    Glossary      = new (require(`./resources/English.js`))();
+
+// For slash commands
+const { REST }  = require('@discordjs/rest');
+const { Routes }= require('discord-api-types/v9');
 
 
 // ██████ Initialization ███████████████████████████████████████████████████████
@@ -70,3 +75,46 @@ client.settings = settings;
 
 // Music Queue
 client.queue    = new Map();
+
+// Command Handler
+fs.readdirSync("./commands").forEach((dir) => {
+    // Imports the different commands for each file
+    fs.readdirSync(`./commands/${dir}`).filter((file) => file.endsWith(".js")).forEach((file) => {
+        // Include the file to be able to operate on it
+        const Commande = require(`./commands/${dir}/${file}`);
+        // Parse the file to retrieve the assigned name. 
+        client.commands.set(Commande.name, Commande);
+    });
+});
+
+// Slash commands
+const rest = new REST({ version: '9' }).setToken(settings.Token);
+
+(async () => {
+	try {
+		console.log('Started refreshing application (/) commands.');
+
+		await rest.put(
+			Routes.applicationGuildCommands(settings.Bot_ID, settings.Guild_ID),
+			{ body: client.commands },
+		);
+
+		console.log('Successfully reloaded application (/) commands.');
+	} catch (error) {
+		console.error(error);
+	}
+})();
+
+client.on('interactionCreate', async interaction => {
+    if (!interaction.isCommand()) return;
+    const command = client.commands.get(interaction.commandName);
+    if (!command) return;
+    try {
+        await command.execute(interaction);
+    } catch (error) {
+        if (error) console.error(error);
+        await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+    }
+});
+
+client.login(settings.Token);
